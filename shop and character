@@ -1,0 +1,117 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Weapon {
+public:
+    string name;
+    int price;
+    Weapon(string n, int p) : name(n), price(p) {}
+};
+
+class Character {
+protected:
+    string Name;
+    int Age;
+    string Gender;
+    int HP;
+    int Stamina;
+    int level;
+    int budget;
+
+public:
+    Character(string name, int age, string gender, int budget) {
+        Name = name;
+        Age = age;
+        Gender = gender;
+        this->budget = budget;
+    }
+
+    bool canAfford(int price) {
+        return budget >= price;
+    }
+
+    void decreaseBudget(int price) {
+        budget -= price;
+    }
+};
+
+class zombie {
+
+    
+};
+
+class Shop {
+public:
+    vector<Weapon> weapons;
+    void addWeapon(Weapon weapon) {
+        weapons.push_back(weapon);
+    }
+    Weapon buyWeapon(string name, Character& character) {
+        for(int i = 0; i < weapons.size(); i++) {
+            if(weapons[i].name == name && character.canAfford(weapons[i].price)) {
+                Weapon bought = weapons[i];
+                weapons.erase(weapons.begin() + i);
+                character.decreaseBudget(bought.price);
+                cout << "You bought a " << bought.name << " for " << bought.price << " dollars." << endl;
+                return bought;
+            }
+        }
+        cout << "Sorry, you either don't have enough money or we don't have that weapon in stock." << endl;
+        return Weapon("", 0);
+    }
+};
+
+
+int main() {
+    string name;
+    int age;
+    string gender;
+    char ch;
+    int choose;
+    int budget;
+    cout << "Enter your budget: ";
+    cin >> budget;
+
+    Character character1(name, age, gender, budget);
+
+    cout << "Hi welcome to IUSTZ ! Let's go to customize your character. " << endl << "Enter your name :";
+    cin >> name;
+    cout << "Enter your age :";
+    cin >> age;
+    cout << "Enter your gender : ";
+    cin >> gender;
+
+    Shop shop;
+    shop.addWeapon(Weapon("shotgun", 100));
+    shop.addWeapon(Weapon("snipe", 150));
+    shop.addWeapon(Weapon("gun", 80));
+    shop.addWeapon(Weapon("sword", 100));
+    shop.addWeapon(Weapon("knife1", 50));
+    shop.addWeapon(Weapon("knife2", 50));
+
+    cout << "Do you want to go to store?(y or n)" << endl;
+    cin >> ch;
+
+    if(ch == 'y') {
+        cout << "What do you want to buy?(enter number)" << endl << " 1.Cold_warm_weapon    2.Consumings    3. Throwings  ";
+        cin >> choose;
+
+        if(choose == 1) {
+            string weaponName;
+            cout << "choose your weapon " << endl << "1.shotgun(100 $)  2.snipe(150 $)  3.gun(80 $)  4.sword(100 $)  5.knife1(50 $)  6.knife2(50 $)";
+            cin >> weaponName;
+            shop.buyWeapon(weaponName, character1);
+        }
+    } else {
+        exit(0);
+    }
+
+    // buy more than 0ne;
+    //git;
+    //zombie enemey class;
+    //human enemey  enharitance;
+
+    return 0;
+}
