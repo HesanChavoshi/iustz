@@ -7,8 +7,6 @@ using namespace std;
 
 #define UP_KEY 72
 #define DOWN_KEY 80
-#define Right_KEY 77
-#define LEFT_KEY 75
 #define ENTER_KEY 13
 
 class Weapon {
@@ -163,7 +161,7 @@ public:
                     }
                     else
                     {
-                        // cout << "not enough budget\n";
+                        
                         cout << color::rize("not enough budget" , "Light Yellow") << endl;
                         continue;
                     }
