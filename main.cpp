@@ -44,6 +44,23 @@ public:
         this->level = level;
     }
 
+    int getHP()
+    {
+        return HP;
+    }
+
+    int getStamina()
+    {
+        return Stamina;
+    }
+
+    int getLevel()
+    {
+        return level;
+    }
+
+    
+
 };
 
 
@@ -51,7 +68,9 @@ class Player : public Character {
 
 protected:
     int budget;
+    string selectedWeapon;
     vector<Weapon> backpack;
+    int warmWeaponSkill;
 
 public:
     Player(string name, int age, string gender) : Character(name, age, gender) {}
@@ -66,12 +85,25 @@ public:
 
     void showBackpack() {
 
-        for (Weapon a : backpack)
+        cout << "your weapons:\n";
+
+        for (int i = 1; i <= backpack.size(); i++)
         {
-            cout << a.name;
+            cout << "["+to_string(i)+"]. " << backpack[i-1].name << "    ";
         }
         
-        
+    }
+
+    void chooseWeapon() {
+        string n;
+        cout << "choose your weapon\nEnter name\n";
+        for (int i = 1; i <= backpack.size(); i++)
+        {
+            cout << "["+to_string(i)+"]. " << backpack[i-1].name << "    ";
+        }
+        cout << endl;
+        cin >> n;
+        selectedWeapon = n;
     }
 
     bool canAfford(int price) {
@@ -85,6 +117,29 @@ public:
     ~Player() {}
 };
 
+class humanEnemy {
+
+protected:
+    int HP;
+
+public:
+    // humanEnemy()
+};
+
+class enemyView {
+
+public:
+    // void displayEnemyDettails()
+};
+
+class enemyController {
+
+};
+
+void fight(Player& character, humanEnemy& enemy) {
+    
+}
+
 class Shop {
 public:
     vector<Weapon> weapons;
@@ -92,23 +147,10 @@ public:
         weapons.push_back(weapon);
     }
     int ch, SelectedOption = 0;
-    // Weapon buyWeapon(string name, Player& character) {
-    //     for(int i = 0; i < weapons.size(); i++) {
-    //         if(weapons[i].name == name && character.canAfford(weapons[i].price)) {
-    //             Weapon bought = weapons[i];
-                // weapons.erase(weapons.begin() + i);
-                // character.decreaseBudget(bought.price);
-                // character.addToBackpack(weapons[i]);
-                // cout << "You bought a " << bought.name << " for " << bought.price << " dollars." << endl;
-    //             return bought;
-    //         }
-    //     }
-    //     cout << "Sorry, you either don't have enough money or we don't have that weapon in stock." << endl;
-    //     return Weapon("", 0);
-    // }
     void buyWeapon(Player& character) {
         while (true)
         {
+            cout << "choose weapon with up and down key to buy:" << endl;
             for (int i = 0; i < weapons.size(); i++)
             {
                 if (i == SelectedOption)
@@ -209,16 +251,20 @@ int main() {
     cin >> ch;
 
     if(ch == 'y') {
-        cout << "What do you want to buy?(enter number)" << endl << " 1.Cold_warm_weapon    2.Consumings    3. Throwings  ";
+        cout << "What do you want to buy? (enter number)" << endl << " [1]. Cold_warm_weapon    [2]. Consumings    [3]. Throwings  \n";
         cin >> choose;
 
+        system("cls");
+
         if(choose == 1) {
-            // string weaponName;
-            // cout << "choose your weapon " << endl << "1.shotgun(100 $)  2.snipe(150 $)  3.gun(80 $)  4.sword(100 $)  5.knife1(50 $)  6.knife2(50 $)";
-            // cin >> weaponName;
-            // shop.buyWeapon(weaponName, character1);
             shop.buyWeapon(character1);
+            system("cls");
+            character1.chooseWeapon();
         }
+        // else
+        // {
+        // }
+        
     } else {
         exit(0);
     }
