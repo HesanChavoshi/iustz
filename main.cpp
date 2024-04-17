@@ -100,8 +100,16 @@ public:
         return selectedWeapon;
     }
 
+    void setSelectedWeapon(string a) {
+        selectedWeapon = a;
+    }
+
     int getWarmWeaponSkill() {
         return warmWeaponSkill;
+    }
+
+    void setWarmWeaponSkill(int a) {
+        warmWeaponSkill = a;
     }
 
     int getBudget() {
@@ -112,13 +120,25 @@ public:
         return coldWeaponSkill;
     }
 
+    void setColdWeaponSkill(int a) {
+        coldWeaponSkill = a;
+    }
+
     void setBudget(int budget) {
         this->budget = budget;
     }
 
-    // void addToBackpack(Item weapon) {
-    //     backpack.push_back(weapon);
-    // }
+    void addToThrowing(Throwing throwing) {
+        throwings.push_back(throwing);
+    }
+
+    void addToWeapons(Weapon weapon) {
+        weapons.push_back(weapon);
+    }
+
+    void addToConsuming(Consumable consumable) {
+        consumables.push_back(consumable);
+    }
 
     // void showBackpack() {
 
@@ -232,7 +252,7 @@ public:
 // };
 
 class Game {
-
+public:
     static int calculatePlayerDamage(Player& character) {
 
         if (character.getSelectedWeapon() == "shotgun") {
@@ -291,11 +311,13 @@ class Game {
 
         humanEnemy enemy(50, 100);
 
+        cout << color::rize("FIGHT STARTED, human enemy", "Red") << endl;
+
         while (true)
         {
             int choice;
-            cout << "Your turn: \nchoose to what happen";
-            cout << "[1]. choose weapon [2]. attack [3]. upgrade your character\n";
+            cout << "Your turn: \nchoose to what happen\n";
+            cout << "[1].choose weapon [2].attack [3].upgrade your character\n";
             cin >> choice;
 
             if (choice == 1)
@@ -304,26 +326,32 @@ class Game {
             }
             else if (choice == 2)
             {
-                cout << "Do you want to use throwing weapon?(y/n)\n";
-                char a;
-                cin >> a;
+                // cout << "Do you want to use throwing weapon?(y/n)\n";
+                // char a;
+                // cin >> a;
 
-                if (a == 'y')
-                {
+                // if (a == 'y')
+                // {
                     
-                }
+                // }
 
-                else
-                {
-                    int damage = calculatePlayerDamage(character);
-                    enemy.setHP(enemy.getHP() - damage);
-                    cout << "You dealt " << damage << " damage to the enemy." << endl;
-                }
+                // else
+                // {
+                //     int damage = calculatePlayerDamage(character);
+                //     enemy.setHP(enemy.getHP() - damage);
+                //     character.setStamina(character.getStamina() - 10);
+                //     cout << "You dealt " << damage << " damage to the enemy." << endl;
+                // }
+
+                int damage = calculatePlayerDamage(character);
+                enemy.setHP(enemy.getHP() - damage);
+                cout << "You dealt " << damage << " damage to the enemy." << endl;
+                character.setStamina(character.getStamina() - 10);
             }
             
 
             if (enemy.getHP() <= 0) {
-                cout << "Congratulations! You defeated the enemy!" << endl;
+                cout << color::rize("Congratulations! You defeated the enemy!", "Green") << endl;
                 character.setBudget(character.getBudget() + enemy.getBudget());
                 character.setlevel(character.getLevel() + 1);
                 break;
@@ -331,12 +359,77 @@ class Game {
 
             cout << "Enemy's turn:" << endl;
             enemy.chooseWeapon();
+            cout << "Enemy's weapon: " << enemy.getSelectedWeapon() << endl;
             int damage = calculateEnemyDamage(enemy, character);
             character.setHP(character.getHP() - damage);
 
             if (character.getHP() <= 0) {
-                cout << "Game over! You were defeated by the enemy." << endl;
+                cout << color::rize("Game over! You were defeated by the enemy.", "Red") << endl;
+                exit(0);
+            }
+
+            cout << "Your HP: " << character.getHP() << endl;
+            cout << "Enemy HP: " << enemy.getHP() << endl;
+        }
+        
+    }
+
+    static void zombieFight(Player& character) {
+
+        humanEnemy enemy(50, 100);
+
+        cout << color::rize("FIGHT STARTED", "Red") << endl;
+
+        while (true)
+        {
+            int choice;
+            cout << "Your turn: \nchoose to what happen\n";
+            cout << "[1].choose weapon [2].attack [3].upgrade your character\n";
+            cin >> choice;
+
+            if (choice == 1)
+            {
+                character.chooseWeapon();
+            }
+            else if (choice == 2)
+            {
+                // cout << "Do you want to use throwing weapon?(y/n)\n";
+                // char a;
+                // cin >> a;
+
+                // if (a == 'y')
+                // {
+                    
+                // }
+
+                // else
+                // {
+                //     character.setStamina(character.getStamina() - 10);
+                //     int damage = calculatePlayerDamage(character);
+                //     enemy.setHP(enemy.getHP() - damage);
+                //     cout << "You dealt " << damage << " damage to the enemy." << endl;
+                // }
+
+                character.setStamina(character.getStamina() - 10);
+                int damage = calculatePlayerDamage(character);
+                enemy.setHP(enemy.getHP() - damage);
+                cout << "You dealt " << damage << " damage to the enemy." << endl;
+            }
+            
+
+            if (enemy.getHP() <= 0) {
+                cout << color::rize("Congratulations! You defeated the enemy!", "Green") << endl;
+                character.setlevel(character.getLevel() + 1);
                 break;
+            }
+
+            cout << "Enemy's turn:" << endl;
+            int damage = 15;
+            character.setHP(character.getHP() - damage);
+
+            if (character.getHP() <= 0) {
+                cout << color::rize("Game over! You were defeated by the enemy.", "Red") << endl;
+                exit(0);
             }
 
             cout << "Your HP: " << character.getHP() << endl;
@@ -414,7 +507,7 @@ public:
                 {
                     Weapon bought = weapons[SelectedOption];
                     character.decreaseBudget(bought.price);
-                    character.addToBackpack(weapons[SelectedOption]);
+                    character.addToWeapons(weapons[SelectedOption]);
                     weapons.erase(weapons.begin() + SelectedOption);
                     cout << "You bought a " << bought.name << " for " << bought.price << " dollars." << endl;
 
@@ -483,7 +576,7 @@ public:
                 {
                     Consumable bought = consumables[SelectedOption];
                     character.decreaseBudget(bought.price);
-                    character.addToBackpack(consumables[SelectedOption]);
+                    character.addToConsuming(consumables[SelectedOption]);
                     consumables.erase(consumables.begin() + SelectedOption);
                     cout << "You bought a " << bought.name << " for " << bought.price << " dollars." << endl;
 
@@ -552,7 +645,7 @@ public:
                 {
                     Throwing bought = throwings[SelectedOption];
                     character.decreaseBudget(bought.price);
-                    character.addToBackpack(throwings[SelectedOption]);
+                    character.addToThrowing(throwings[SelectedOption]);
                     throwings.erase(throwings.begin() + SelectedOption);
                     cout << "You bought a " << bought.name << " for " << bought.price << " dollars." << endl;
 
@@ -594,7 +687,16 @@ int main() {
 
     Player character1(name, age, gender);
 
-    character1.setBudget(100);
+    character1.setBudget(150);
+    character1.setlevel(1);
+    character1.setStamina(100);
+    character1.setHP(50);
+
+    Weapon knife1("knife1", 50);
+    character1.addToWeapons(knife1);
+    character1.setSelectedWeapon("knife1");
+    character1.setWarmWeaponSkill(1);
+    character1.setColdWeaponSkill(1);
     
     Shop shop;
     shop.addWeapon(Weapon("shotgun", 100));
@@ -603,28 +705,56 @@ int main() {
     shop.addWeapon(Weapon("sword", 100));
     shop.addWeapon(Weapon("knife1", 50));
     shop.addWeapon(Weapon("knife2", 50));
+    
+    shop.addThrowing(Throwing("grenade", 50));
+    shop.addThrowing(Throwing("bomb", 60));
+    
+    shop.addConsumable(Consumable("plant", 60));
+    shop.addConsumable(Consumable("exir", 60));
+    shop.addConsumable(Consumable("energizer", 60));
 
-    cout << "Do you want to go to store?(y or n)" << endl;
-    cin >> ch;
+    while (true)
+    {
+        srand(time(0));
 
-    if(ch == 'y') {
-        cout << "What do you want to buy? (enter number)" << endl << " [1]. Cold_warm_weapon    [2]. Consumings    [3]. Throwings  \n";
-        cin >> choose;
+        int random = rand() % 3;
 
-        system("cls");
+        if(random == 0) {
+            cout << "What do you want to buy? (enter number)" << endl << " [1]. Cold_warm_weapon    [2]. Consumings    [3]. Throwings  \n";
+            cin >> choose;
 
-        if(choose == 1) {
-            shop.buyWeapon(character1);
             system("cls");
-            character1.chooseWeapon();
+
+            if(choose == 1) {
+                shop.buyWeapon(character1);
+                system("cls");
+                character1.setStamina(character1.getStamina() - 10);
+            }
+            else if(choose == 2)
+            {
+                shop.buyConsumable(character1);
+                character1.setStamina(character1.getStamina() - 10);
+            }
+            else if(choose == 3)
+            {
+                shop.buyThrowing(character1);
+                character1.setStamina(character1.getStamina() - 10);
+            }
+            
         }
-        // else
-        // {
-        // }
+        else if (random == 1)
+        {
+            Game::fight(character1);
+        }
+        else if (random == 2)
+        {
+            Game::zombieFight(character1);
+        }
         
-    } else {
-        exit(0);
     }
+    
+
+    
 
     return 0;
 }

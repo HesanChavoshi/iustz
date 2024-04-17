@@ -19,6 +19,6 @@ std::string Consumings[]=["plant","exir","energizer"]
 class Throwings
 {
 
-std::string Throwings[]=["bomb1","bomb2","bomb3","bomb4"]
+std::string Throwings[]=["grenade","bomb2","bomb3","bomb4"]
 
 };
