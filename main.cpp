@@ -278,6 +278,8 @@ public:
         else if (character.getSelectedWeapon() == "knife2") {
             return 10 + character.getColdWeaponSkill();
         }
+
+        return 10;
     }
         
     static int calculateEnemyDamage(humanEnemy& enemy, Player& character) {
@@ -286,25 +288,27 @@ public:
             return 20 + character.getLevel() * 2;
         } 
         
-        else if (character.getSelectedWeapon() == "snipe") {
+        else if (enemy.getSelectedWeapon() == "snipe") {
             return 30 + character.getLevel() * 3;
         } 
         
-        else if (character.getSelectedWeapon() == "gun") {
+        else if (enemy.getSelectedWeapon() == "gun") {
             return 15 + character.getLevel();
         }
 
-        else if (character.getSelectedWeapon() == "sword") {
+        else if (enemy.getSelectedWeapon() == "sword") {
             return 15 + character.getLevel() * 2;
         }
 
-        else if (character.getSelectedWeapon() == "knife1") {
+        else if (enemy.getSelectedWeapon() == "knife1") {
             return 10 + character.getLevel();
         }
 
-        else if (character.getSelectedWeapon() == "knife2") {
+        else if (enemy.getSelectedWeapon() == "knife2") {
             return 10 + character.getLevel();
         }
+
+        return 10;
     }
         
     static void fight(Player& character) {
@@ -424,7 +428,7 @@ public:
             }
 
             cout << "Enemy's turn:" << endl;
-            int damage = 15;
+            int damage = 10;
             character.setHP(character.getHP() - damage);
 
             if (character.getHP() <= 0) {
